@@ -23,10 +23,15 @@ const app = express();
 
 connectDB();
 
+const cors = require("cors");
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://ai-investment-agent-git-main-nbhupendra958-1221s-projects.vercel.app"
+  ],
+  credentials: true
 }));
-app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
