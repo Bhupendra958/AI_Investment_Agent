@@ -1,0 +1,38 @@
+/* src/styles/theme.css */
+/* Dark theme with glassmorphism cards */
+:root {
+  --color-primary: hsl(220, 90%, 56%);
+  --color-primary-dark: hsl(220, 90%, 46%);
+  --color-bg: #0f172a; /* slate-900 */
+  --color-surface: rgba(255, 255, 255, 0.08);
+  --color-surface-border: rgba(255, 255, 255, 0.12);
+  --color-text: #f1f5f9; /* slate-100 */
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.glass-card {
+  backdrop-filter: blur(12px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+
+/* Simple fade‑in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}

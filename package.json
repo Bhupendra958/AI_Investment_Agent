@@ -1,0 +1,14 @@
+{
+  "name": "ai-investment-agent",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "install:all": "npm install --prefix server && npm install --prefix client"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "tailwindcss": "^4.3.2"
+  }
+}
