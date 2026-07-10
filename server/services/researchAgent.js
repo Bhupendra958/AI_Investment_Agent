@@ -1,4 +1,4 @@
-const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const { GoogleGenAI } = require("@google/genai");
 const { StateGraph, START, END, Annotation } = require("@langchain/langgraph");
 
 const ResearchState = Annotation.Root({
@@ -13,7 +13,7 @@ const ResearchState = Annotation.Root({
   factors: Annotation,
 });
 
-function getModel() {
+function getClient() {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
   if (!apiKey) {
@@ -22,20 +22,17 @@ function getModel() {
     throw error;
   }
 
-  return new ChatGoogleGenerativeAI({
-    model: "gemini-1.5-flash",
-    apiKey,
-    temperature: 0.3,
-  });
+  return new GoogleGenAI({ apiKey });
 }
 
 async function invokeModel(prompt) {
-  const model = getModel();
   try {
-    const response = await model.invoke(prompt);
-    return typeof response.content === "string"
-      ? response.content
-      : response.content.map((part) => part.text || "").join("");
+    const ai = getClient();
+    const response = await ai.models.generateContent({
+      model: "gemini-3.1-flash-lite",
+      contents: prompt,
+    });
+    return response.text;
   } catch (err) {
     // Normalise rate-limit errors so the route handler can detect them
     if (
@@ -207,7 +204,7 @@ async function analyzeCompany(company) {
     summary: finalState.summary,
     factors: finalState.factors,
     searchTime: Date.now() - startTime,
-    modelUsed: "gemini-1.5-flash (LangGraph)",
+    modelUsed: "gemini-3.1-flash-lite (LangGraph)",
   };
 }
 
