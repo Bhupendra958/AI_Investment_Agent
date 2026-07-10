@@ -2,18 +2,14 @@ const express = require("express");
 const router = express.Router();
 const Chat = require("../models/Chat");
 const authMiddleware = require("../middleware/authMiddleware");
-const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const { GoogleGenAI } = require("@google/genai");
 
 // Helper to initialize Gemini Chat
-function getGeminiChat() {
+function getGeminiClient() {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error("GEMINI_API_KEY is not configured");
   }
-  return new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash-lite",
-    apiKey: process.env.GEMINI_API_KEY,
-    temperature: 0.7,
-  });
+  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY.trim() });
 }
 
 // Get user chat history
@@ -62,7 +58,7 @@ router.post("/message", authMiddleware, async (req, res) => {
     let aiReply = "";
 
     try {
-      const gemini = getGeminiChat();
+      const ai = getGeminiClient();
       
       // Build a prompt that context-sensitizes Gemini to act as an investment assistant
       const systemPrompt = `You are a professional, expert AI Financial & Investment Advisor. 
@@ -70,10 +66,11 @@ The user is asking: "${text.trim()}".
 Provide an insightful, clear, and quantitative-minded response containing concrete details, advice on how to research companies, or educational details about financial metrics (like P/E ratio, ROE, margins).
 Keep your formatting clean and professional using bullet points. Do not include random market disclaimers on every single line, keep the response under 300 words.`;
 
-      const response = await gemini.invoke(systemPrompt);
-      aiReply = typeof response.content === "string"
-        ? response.content
-        : response.content.map((part) => part.text || "").join("");
+      const response = await ai.models.generateContent({
+        model: "gemini-3.1-flash-lite",
+        contents: systemPrompt,
+      });
+      aiReply = response.text;
 
     } catch (apiError) {
       console.log("Gemini Chat API Error, falling back to local analysis:", apiError.message);
