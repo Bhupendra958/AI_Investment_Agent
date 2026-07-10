@@ -103,7 +103,7 @@ function Profile() {
   }
 
   const apiBase =
-    import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+    import.meta.env.VITE_API_URL?.replace("/api", "") || (import.meta.env.PROD ? "https://ai-investment-agent-9njw.onrender.com" : "http://localhost:5000");
 
   const avatarUrl =
     avatarPreview ||
