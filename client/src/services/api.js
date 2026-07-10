@@ -1,7 +1,14 @@
 import axios from "axios";
 
+const userApiUrl = import.meta.env.VITE_API_URL;
+let apiUrl = import.meta.env.PROD ? "https://ai-investment-agent-9njw.onrender.com/api" : "http://localhost:5000/api";
+
+if (userApiUrl) {
+  apiUrl = userApiUrl.endsWith("/api") ? userApiUrl : `${userApiUrl}/api`;
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://ai-investment-agent-9njw.onrender.com/api" : "http://localhost:5000/api"),
+  baseURL: apiUrl,
 });
 
 api.interceptors.response.use(
