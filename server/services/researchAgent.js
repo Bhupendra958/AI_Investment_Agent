@@ -23,7 +23,7 @@ function getModel() {
   }
 
   return new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash-lite",
+    model: "gemini-1.5-flash",
     apiKey,
     temperature: 0.3,
   });
@@ -207,7 +207,7 @@ async function analyzeCompany(company) {
     summary: finalState.summary,
     factors: finalState.factors,
     searchTime: Date.now() - startTime,
-    modelUsed: "gemini-2.5-flash-lite (LangGraph)",
+    modelUsed: "gemini-1.5-flash (LangGraph)",
   };
 }
 

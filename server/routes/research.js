@@ -58,7 +58,7 @@ router.post("/", authMiddleware, async (req, res) => {
         ? "Gemini API quota exceeded. Please wait for your quota to reset or use an API key with more quota."
         : isConfigError
           ? error.message
-          : "AI Research Failed",
+          : (error.message || "AI Research Failed"),
       error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
