@@ -1,26 +1,55 @@
 import { FaCheckCircle } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function KeyFactors({ result }) {
   if (!result || !result.factors) return null;
 
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.35 } },
+  };
+
   return (
-    <div className="rounded-2xl border border-slate-200/60 bg-white/70 dark:bg-slate-900/40 dark:border-slate-800/80 shadow-lg p-6 transition-all duration-350 hover:-translate-y-0.5 hover:shadow-xl">
-      <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.2 }}
+      className="glass-card p-6 shadow-2xl relative overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
+
+      <h2 className="text-lg font-black text-white tracking-tight mb-6 relative z-10">
         Core Driving Factors
       </h2>
 
-      <div className="space-y-3">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="space-y-3 relative z-10"
+      >
         {result.factors.map((factor, index) => (
-          <div
+          <motion.div
             key={index}
-            className="flex items-start gap-3 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/60 rounded-xl p-4 text-slate-700 dark:text-slate-300 transition-all duration-200 hover:border-blue-500/30"
+            variants={itemVariants}
+            whileHover={{ x: 4, borderColor: "rgba(59, 130, 246, 0.2)", backgroundColor: "rgba(255, 255, 255, 0.01)" }}
+            className="flex items-start gap-3.5 bg-slate-950/40 border border-white/5 rounded-2xl p-4 text-slate-300 transition-all duration-200"
           >
-            <FaCheckCircle className="text-emerald-500 text-sm mt-0.5 flex-shrink-0" />
-            <span className="text-xs leading-relaxed">{factor}</span>
-          </div>
+            <FaCheckCircle className="text-emerald-400 text-sm mt-0.5 flex-shrink-0" />
+            <span className="text-xs leading-relaxed font-semibold">{factor}</span>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

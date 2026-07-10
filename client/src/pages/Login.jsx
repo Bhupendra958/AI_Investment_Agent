@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { motion } from "framer-motion";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { FaChartLine, FaLock, FaEnvelope, FaArrowRight } from "react-icons/fa";
@@ -43,87 +44,151 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
+    <div className="min-h-screen flex text-slate-100 relative overflow-hidden" style={{ background: "radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%)" }}>
+      {/* Decorative Shifting Glowing Blobs */}
+      <motion.div
+        className="absolute -top-40 -left-40 w-96 h-96 rounded-full filter blur-[100px] opacity-25"
+        style={{ background: "radial-gradient(circle, #3b82f6, #06b6d4)" }}
+        animate={{
+          x: [0, 40, 0],
+          y: [0, 60, 0],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="absolute -bottom-40 -right-40 w-[450px] h-[450px] rounded-full filter blur-[120px] opacity-20"
+        style={{ background: "radial-gradient(circle, #10b981, #3b82f6)" }}
+        animate={{
+          x: [0, -50, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
 
       {/* Left Panel - Branding */}
-      <div className="hidden lg:flex w-1/2 flex-col justify-between p-12 relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #3b82f6, transparent)", transform: "translate(-30%, -30%)" }} />
-        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-10" style={{ background: "radial-gradient(circle, #10b981, transparent)", transform: "translate(30%, 30%)" }} />
-
+      <div className="hidden lg:flex w-1/2 flex-col justify-between p-16 relative z-10">
         {/* Logo */}
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2.5 rounded-xl" style={{ background: "linear-gradient(135deg, #3b82f6, #06b6d4)" }}>
-              <FaChartLine className="text-white text-xl" />
-            </div>
-            <span className="text-white text-xl font-bold tracking-tight">AI Investment Agent</span>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3.5"
+        >
+          <div className="p-3 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 shadow-lg shadow-blue-500/25 relative group">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
+            <FaChartLine className="text-white text-xl relative z-10" />
           </div>
-          <p className="text-slate-400 text-sm ml-14">Powered by LangGraph + Gemini AI</p>
-        </div>
-
-        {/* Feature List */}
-        <div className="space-y-8">
           <div>
-            <h2 className="text-4xl font-bold text-white leading-tight mb-3">
-              Smart Investment<br />Decisions, Instantly.
-            </h2>
-            <p className="text-slate-400 text-base leading-relaxed">
-              Our AI agent researches companies in real-time and delivers INVEST or PASS recommendations with full reasoning — powered by a multi-step LangGraph pipeline.
+            <span className="text-white text-2xl font-black tracking-tight bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
+              AI Investment
+            </span>
+            <p className="text-cyan-400 text-xs font-semibold tracking-wider uppercase mt-0.5">
+              Powered by LangGraph + Gemini AI
             </p>
           </div>
+        </motion.div>
 
-          <div className="space-y-4">
+        {/* Feature List */}
+        <div className="space-y-10 my-auto">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <h2 className="text-5xl font-extrabold text-white leading-tight mb-5 tracking-tight">
+              Invest with <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400">Precision</span>,<br />Powered by AI Agents.
+            </h2>
+            <p className="text-slate-400 text-base leading-relaxed max-w-lg">
+              Our LangGraph agent runs automated real-time multi-agent research pipelines across target companies, returning clean, unified verdicts.
+            </p>
+          </motion.div>
+
+          <div className="space-y-4 max-w-lg">
             {[
-              { icon: "🔍", title: "Deep Company Research", desc: "4-stage AI analysis pipeline" },
-              { icon: "📊", title: "Financial Analysis", desc: "Revenue, valuation & margins" },
-              { icon: "⚠️", title: "Risk Assessment", desc: "Market, regulatory & execution risks" },
-              { icon: "✅", title: "Clear Verdict", desc: "INVEST or PASS with confidence score" },
+              { icon: "🔍", title: "Automated Research Agent", desc: "4-stage pipeline gathers company details, financials, & risks" },
+              { icon: "📊", title: "Deep Financial Analytics", desc: "Monitors margins, valuation metric trends, and metrics" },
+              { icon: "⚠️", title: "Adversarial Risk Check", desc: "Uncovers market pressures, barriers, and structural threats" },
+              { icon: "✨", title: "Consolidated Verdicts", desc: "Yields clean INVEST/PASS recommendation with confidence score" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 rounded-2xl" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <span className="text-2xl">{item.icon}</span>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                whileHover={{ x: 6, backgroundColor: "rgba(255, 255, 255, 0.04)" }}
+                className="flex items-start gap-4.5 p-4.5 rounded-2xl border border-white/5 bg-white/[0.02] shadow-inner transition-all"
+              >
+                <span className="text-2xl mt-0.5">{item.icon}</span>
                 <div>
-                  <p className="text-white font-semibold text-sm">{item.title}</p>
-                  <p className="text-slate-400 text-xs">{item.desc}</p>
+                  <p className="text-white font-bold text-sm">{item.title}</p>
+                  <p className="text-slate-400 text-xs mt-1 leading-relaxed">{item.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Footer stat */}
-        <div className="flex gap-8">
-          {[["AI-Powered", "Research"], ["Real-Time", "Analysis"], ["Secure", "Platform"]].map(([a, b], i) => (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="flex gap-12 border-t border-white/5 pt-8"
+        >
+          {[["AI-Powered", "Research Pipelines"], ["Real-Time", "Deep Graph Runs"], ["Secure", "Protected Actions"]].map(([a, b], i) => (
             <div key={i}>
               <p className="text-white font-bold text-lg">{a}</p>
-              <p className="text-slate-400 text-xs">{b}</p>
+              <p className="text-slate-400 text-xs mt-0.5">{b}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16">
-        <div className="w-full max-w-md">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-md bg-white/[0.02] border border-white/10 backdrop-blur-2xl p-8 lg:p-10 rounded-3xl shadow-2xl relative"
+        >
+          {/* Top highlight glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full blur-xs opacity-70" />
+
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
-            <p className="text-slate-400">Sign in to your account to continue</p>
+            <h1 className="text-3xl font-black text-white tracking-tight mb-2">Welcome Back</h1>
+            <p className="text-slate-400 text-sm">Sign in to your account to resume research</p>
           </div>
 
           {/* Error Banner */}
           {error && (
-            <div className="mb-5 px-4 py-3 rounded-xl text-sm text-rose-300 font-medium" style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.2)" }}>
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 px-4 py-3.5 rounded-2xl text-xs text-rose-300 font-semibold border border-rose-500/20 bg-rose-500/10 flex items-center gap-2"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse flex-shrink-0" />
               {error}
-            </div>
+            </motion.div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
-            <div>
-              <label className="block text-slate-400 text-sm font-medium mb-2">Email Address</label>
-              <div className="relative">
-                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
+            <div className="space-y-2">
+              <label className="block text-slate-300 text-sm font-semibold">Email Address</label>
+              <div className="relative group">
+                <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm group-focus-within:text-blue-400 transition-colors" />
                 <input
                   type="email"
                   name="email"
@@ -131,22 +196,16 @@ function Login() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-white placeholder-slate-500 text-sm transition-all duration-200 focus:outline-none"
-                  style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.10)",
-                  }}
-                  onFocus={e => { e.target.style.border = "1px solid rgba(59,130,246,0.6)"; e.target.style.background = "rgba(59,130,246,0.06)"; }}
-                  onBlur={e => { e.target.style.border = "1px solid rgba(255,255,255,0.10)"; e.target.style.background = "rgba(255,255,255,0.06)"; }}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-blue-500/[0.02] focus:ring-4 focus:ring-blue-500/10 transition-all duration-200"
                 />
               </div>
             </div>
 
             {/* Password */}
-            <div>
-              <label className="block text-slate-400 text-sm font-medium mb-2">Password</label>
-              <div className="relative">
-                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm" />
+            <div className="space-y-2">
+              <label className="block text-slate-300 text-sm font-semibold">Password</label>
+              <div className="relative group">
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm group-focus-within:text-blue-400 transition-colors" />
                 <input
                   type="password"
                   name="password"
@@ -154,41 +213,43 @@ function Login() {
                   value={form.password}
                   onChange={handleChange}
                   required
-                  className="w-full pl-11 pr-4 py-3.5 rounded-xl text-white placeholder-slate-500 text-sm transition-all duration-200 focus:outline-none"
-                  style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.10)",
-                  }}
-                  onFocus={e => { e.target.style.border = "1px solid rgba(59,130,246,0.6)"; e.target.style.background = "rgba(59,130,246,0.06)"; }}
-                  onBlur={e => { e.target.style.border = "1px solid rgba(255,255,255,0.10)"; e.target.style.background = "rgba(255,255,255,0.06)"; }}
+                  className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-blue-500/[0.02] focus:ring-4 focus:ring-blue-500/10 transition-all duration-200"
                 />
               </div>
             </div>
 
             {/* Sign In Button */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0"
-              style={{ background: "linear-gradient(135deg, #3b82f6, #06b6d4)" }}
+              className="w-full py-3.5 rounded-2xl font-bold text-white flex items-center justify-center gap-2.5 transition-all duration-200 disabled:opacity-75 disabled:hover:scale-100 shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 cursor-pointer"
+              style={{ background: "linear-gradient(135deg, #2563eb, #0891b2)" }}
             >
               {loading ? (
-                <><span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span> Signing in...</>
+                <>
+                  <span className="animate-spin rounded-full h-4.5 w-4.5 border-2 border-white/20 border-t-white" />
+                  Authenticating...
+                </>
               ) : (
-                <> Sign In <FaArrowRight className="text-sm" /></>
+                <>
+                  Get Started
+                  <FaArrowRight className="text-xs" />
+                </>
               )}
-            </button>
+            </motion.button>
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-4">
-            <hr className="flex-1" style={{ borderColor: "rgba(255,255,255,0.1)" }} />
-            <span className="text-slate-500 text-sm">or continue with</span>
-            <hr className="flex-1" style={{ borderColor: "rgba(255,255,255,0.1)" }} />
+          <div className="my-7 flex items-center gap-4">
+            <div className="h-[1px] flex-1 bg-white/10" />
+            <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider">or join with</span>
+            <div className="h-[1px] flex-1 bg-white/10" />
           </div>
 
           {/* Google */}
-          <div className="flex justify-center">
+          <div className="flex justify-center bg-white/[0.02] border border-white/5 py-3 rounded-2xl hover:bg-white/[0.04] transition-colors">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={() => setError("Google Login Failed")}
@@ -197,12 +258,12 @@ function Login() {
 
           {/* Register link */}
           <p className="text-center mt-8 text-slate-400 text-sm">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-              Create one free
+            New to the platform?{" "}
+            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-bold hover:underline transition-all">
+              Create an account
             </Link>
           </p>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
