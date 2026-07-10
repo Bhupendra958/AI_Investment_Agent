@@ -23,13 +23,18 @@ const app = express();
 
 connectDB();
 
-const cors = require("cors");
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-investment-agent-orpin.vercel.app"
+];
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://ai-investment-agent-git-main-nbhupendra958-1221s-projects.vercel.app"
-  ],
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 
